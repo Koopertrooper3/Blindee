@@ -38,23 +38,7 @@
     white-space: pre;
     padding: 0.5rem;
     border-radius: 8px;
-    color: inherit;
     text-decoration: none;
     gap: 1rem;
-  }
-
-  #sidebar nav a.active span {
-    color: inherit;
-  }
-  #sidebar nav .active i {
-      color: inherit;
-  }
-  #sidebar nav a.active {
-      background: hsl(224, 100%, 67%);
-      color: white;
-  }
-
-  .file-upload-button{
-    @apply text-xl text-gray-200 bg-cyan-500 border-0 border-b-4 border-cyan-700 border-solid hover:bg-cyan-600
   }
 }

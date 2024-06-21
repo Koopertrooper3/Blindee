@@ -81,3 +81,6 @@ body {
     background: hsl(224, 100%, 67%);
     color: white;
 }
+#sidebar nav a.pending {
+    color: hsl(224, 98%, 58%);
+}

@@ -8,7 +8,8 @@ module.exports = {
       },
       colors:{
         menubackground : '#f7f7f7',
-        menuborder : '#e3e3e3'
+        menuborder : '#e3e3e3',
+        buttoncolor : 'hsl(224, 100%, 67%)',
       },
       borderWidth:{
         DEFAULT: '1px',

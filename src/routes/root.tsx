@@ -17,77 +17,78 @@ export default function Root(){
 
 
     return (
-        <>
-        <div id = "sidebar" className="w-96 bg-menubackground border-r border-menuborder border-solid flex flex-col">
-            <h1>{appTitle}</h1>
-            <nav className="overflow-auto pt-4">
-            <ul className="p-0 m-0 list-none">
-                <li className="my-1 mx-0">
-                    <NavLink to={``}
-                    className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                          ? "pending"
-                          : ""
-                      }>
-                    Home
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`newrecipe`}
-                    className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                          ? "pending"
-                          : ""
-                      }>
-                    Add a New Recipe
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`search`}
-                    className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                          ? "pending"
-                          : ""
-                      }>
-                    Search
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`planning`}
-                    className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                          ? "pending"
-                          : ""
-                      }>
-                    Planning
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to={`random`}
-                    className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                          ? "pending"
-                          : ""
-                      }>
-                    Random
-                    </NavLink>
-                </li>
-            </ul>
-        </nav>
+        <div className="size-full flex overflow-auto">
+            <div id = "sidebar" className="order-1 w-96 h-full bg-menubackground border-r border-menuborder border-solid flex flex-col sticky top-0">
+                <h1>{appTitle}</h1>
+                <nav className="overflow-auto pt-4">
+                <ul className="p-0 m-0 list-none">
+                    <li className="my-1 mx-0">
+                        <NavLink to={``}
+                        className={({ isActive, isPending }) =>
+                            isActive
+                            ? "bg-sky-400 text-white"
+                            : isPending
+                            ? "pending"
+                            : "text-black"
+                        }>
+                        Home
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={`newrecipe`}
+                        className={({ isActive, isPending }) =>
+                            isActive
+                            ? "bg-sky-400 text-white"
+                            : isPending
+                            ? "pending"
+                            : "text-black"
+                        }>
+                        Add a New Recipe
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={`search`}
+                        className={({ isActive, isPending }) =>
+                            isActive
+                            ? "bg-sky-400 text-white"
+                            : isPending
+                            ? "pending"
+                            : "text-black"
+                        }>
+                        Search
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={`planning`}
+                        className={({ isActive, isPending }) =>
+                            isActive
+                            ? "bg-sky-400 text-white"
+                            : isPending
+                            ? "pending"
+                            : "text-black"
+                        }>
+                        Planning
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={`random`}
+                        className={({ isActive, isPending }) =>
+                            isActive
+                            ? "bg-sky-400 text-white"
+                            : isPending
+                            ? "pending"
+                            : "text-black"
+                        }>
+                        Random
+                        </NavLink>
+                    </li>
+                </ul>
+            </nav>
+            </div>
+
+            <div id="detail" className="order-2 m-10 h-fit w-fit flex content-start flex-wrap justify-center">
+                <Outlet />
+            </div>
         </div>
-        <div id="detail" className="m-10 h-full w-full flex content-start flex-wrap justify-center">
-            <Outlet />
-        </div>
-        </>
     );
 }
