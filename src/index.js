@@ -1,13 +1,55 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import './stylesheets/indecopy.css';
 import reportWebVitals from './reportWebVitals';
+
+//Additional Packages
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import React, {createContext} from 'react';
+
+//Components
+import Root from './routes/root.tsx';
+import Homepage from './routes/homepage';
+import Searchpage from './routes/searchpage';
+import Planningpage from './routes/planningpage';
+import Newrecipepage from './routes/newrecipe';
+//Globals
+export const globalContext = createContext(
+  {
+    appName : "Blindee"
+  }
+)
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "",
+        element: <Homepage />
+      },
+      {
+        path: "newrecipe",
+        element: <Newrecipepage />
+      },
+      {
+        path: "search",
+        element: <Searchpage/>
+      },
+      {
+        path: "planning",
+        element: <Planningpage/>
+      }
+    ]
+  }
+])
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router = {router} />
   </React.StrictMode>
 );
 
