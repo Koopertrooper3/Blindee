@@ -1,8 +1,16 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { globalContext } from ".."
 
 export default function Newrecipepage(){
     let appTitle = React.useContext(globalContext).appName
+
+    let [recipeSteps, setRecipeSteps] = useState([<RecipeStepInput/>])
+
+    let addRecipe = () =>{
+        setRecipeSteps( recipeSteps => [...recipeSteps, <RecipeStepInput/> ])
+    }
+
+
     useEffect(() =>{
         document.title = appTitle
     },[appTitle])
@@ -91,23 +99,31 @@ export default function Newrecipepage(){
                 </div>
                 
             </div>
-            <span className="order-4 w-full">
-
-            </span>
-            <div className="order-5" style={{width: '50rem'}}>
+            <span className="order-4 w-full"></span>
+            <div id="Cooking Utensils" className="order-5" style={{width: '50rem'}}>
                 <h2>Cooking Utensils</h2>
                 <textarea id="utensils-textbox" className="min-w-[48rem] min-h-[12rem] resize-none"></textarea>
             </div>
-            <div className="order-6" style={{width: '50rem'}}>
+            <div id ="Cooking Steps" className="order-6" style={{width: '50rem'}}>
                 <h2>Steps</h2>
-                <textarea id="steps-textbox" className="min-w-[48rem] min-h-[12rem] resize-none"></textarea>
+                <ol className="pl-4 text-xl">
+                    {recipeSteps}
+                </ol>
+                <input id='add-step-button' type="button" value='Add Step' className="block m-auto"
+                onClick={addRecipe}/>
             </div>
             <span className="order-7 w-full"></span>
-            <div className="order-8 m-4 mt-8">
+            <div id = "Submit Button" className="order-8 m-4 mt-8">
                 <input id='submit-button' type="button" value='Submit'/>
             </div>
 
             
         </>
+    );
+}
+
+function RecipeStepInput(){
+    return(
+        <li className="pl-[1rem]"><input type="text" className="min-w-[46rem]"></input></li>
     );
 }
