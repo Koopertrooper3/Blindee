@@ -86,7 +86,7 @@ export default function Root(){
             </nav>
             </div>
 
-            <div id="detail" className="order-2 m-10 h-fit w-fit flex content-start flex-wrap justify-center">
+            <div id="detail" className="order-2 m-10 h-fit w-fit">
                 <Outlet />
             </div>
         </div>

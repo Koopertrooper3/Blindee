@@ -41,4 +41,9 @@
     text-decoration: none;
     gap: 1rem;
   }
+
+  input {
+    @apply font-apple-system
+  }
+
 }

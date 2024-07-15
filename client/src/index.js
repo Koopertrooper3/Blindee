@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom/client';
-import './stylesheets/indecopy.css';
 import reportWebVitals from './reportWebVitals';
 
 //Additional Packages
