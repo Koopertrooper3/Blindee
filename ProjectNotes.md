@@ -4,10 +4,11 @@
 
 * Organize steps
 
-  Steps need to be organized in a discrete way, i.e in an array as opposed to a single string
+  Steps need to be organized in a discrete way, i.e in an array as opposed to a single string ✔️
+  
 * Ingredients list
 
-  Ingredients need to be organized in a discrete way, i.e in an array as opposed to a single string
+  Ingredients need to be organized in a discrete way, i.e in an array as opposed to a single string ✔️
 
 * Pick time of day for meal ✔️
 

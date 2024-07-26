@@ -7,10 +7,10 @@ import React, {createContext} from 'react';
 
 //Components
 import Root from './routes/root.tsx';
-import Homepage from './routes/homepage';
-import Searchpage from './routes/searchpage';
-import Planningpage from './routes/planningpage';
-import Newrecipepage from './routes/newrecipe';
+import Homepage from './routes/homepage.tsx';
+import Searchpage from './routes/searchpage.tsx';
+import Planningpage from './routes/planningpage.tsx';
+import Newrecipepage from './routes/newrecipe.tsx';
 //Globals
 export const globalContext = createContext(
   {

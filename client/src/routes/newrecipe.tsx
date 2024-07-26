@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect } from "react"
 import { globalContext } from ".."
 import{SubmitHandler, useFieldArray, useForm} from 'react-hook-form'
+import axios from 'axios'
 
 export default function Newrecipepage(){
 
@@ -14,7 +15,8 @@ export default function Newrecipepage(){
     }
 
     type newRecipeInput = {
-        recipeImage: FileList
+        recipeImage: any
+        recipeName: String
         recipeMealType: any
         recipeDifficulty: string
         recipeUtensils : {
@@ -30,7 +32,7 @@ export default function Newrecipepage(){
         }[]
 
     }
-    const { control, register, handleSubmit, setValue } = useForm<newRecipeInput>({
+    const { control, register, handleSubmit, setValue, formState : {errors} } = useForm<newRecipeInput>({
         defaultValues:{
             recipeUtensils : [{utensil : ""}],
             recipeSteps: [{step : ""}],
@@ -53,17 +55,30 @@ export default function Newrecipepage(){
         name: "recipeIngredients"
     });
     
-    const onSubmit : SubmitHandler<newRecipeInput> = (data: newRecipeInput) => {
+    
+    let validateMealType = (value : any) =>{
+        if(value === false){
+            return "Recipe needs at least one meal type"
+        }
+        return true
+    }
+    const onSubmit : SubmitHandler<newRecipeInput> = async (data: newRecipeInput) => {
+        
         console.log(data)
+        data.recipeImage = data.recipeImage.item(0)
+        await axios.post("http://localhost:8000/submit/newrecipe", data, {
+             headers :{
+                'Content-Type' : 'multipart/form-data'
+            }
+        })
     }
     
 
     //Other scripting
     let appTitle = React.useContext(globalContext).appName
 
-
     useEffect(() =>{
-        document.title = appTitle
+        document.title = appTitle //Sets the name of the website
     },[appTitle])
 
     //Image scripting
@@ -96,6 +111,7 @@ export default function Newrecipepage(){
         previewdiv.style.display = "flex"
     }
 
+    //Replaces an image with another image
     let editFile = (event : ChangeEvent<HTMLInputElement>) =>{
         let upload : HTMLElement = document.getElementById("img-upload")!;
         let previewdiv : HTMLElement = document.getElementById("img-preview")!;
@@ -122,6 +138,7 @@ export default function Newrecipepage(){
         setValue("recipeImage", event?.target?.files!)
     }
 
+    //Removes the image from being uploaded
     let clearImage = () => {
         let upload : HTMLElement = document.getElementById("img-upload")!;
         let previewdiv :HTMLElement= document.getElementById("img-preview")!;
@@ -138,7 +155,7 @@ export default function Newrecipepage(){
     }
 
     return (
-        <form className="h-full w-full flex content-start flex-wrap justify-center" onSubmit={handleSubmit(onSubmit)}>
+        <form className="h-full w-full flex content-start flex-wrap justify-center" encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
             <span className="order-1 w-full text-center"><h1 className="mb-8">Add a new recipe</h1></span>
 
             <div id="upload-image" className="order-2 w-96">
@@ -166,28 +183,29 @@ export default function Newrecipepage(){
             <div id="recipe-basic-infomation"className="order-3 ml-8 w-96">
                 <div id="recipe-name">
                     <h2 className="mt-0">Dish Name</h2>
-                    <input type="text" className="text-lg rounded" style={{width: '250px'}} autoCorrect="off" ></input>
+                    <input {...register("recipeName", {/*required : "Recipe requires a name"*/} )} type="text" className="text-lg rounded" style={{width: '250px'}} autoCorrect="off" spellCheck="false" autoComplete="off" ></input>
+                    {errors.recipeName && <div id="recipe-name-error" className="text-red-500">{errors.recipeName.message}</div>}
                 </div>
                 <div id="recipe-mealtime"className="flex justify-left flex-wrap space-x-2 space-y-2">
                     <span className="order-1 w-full"><h2>Time of Meal</h2></span>
 
 
                     <div className="order-2">
-                        <input {...register("recipeMealType")} value={mealType.Breakfast} id="breakfast-checkbox"type="checkbox" className="peer"style={{display: 'none'}} ></input>
+                        <input {...register("recipeMealType", {validate: validateMealType})} value={mealType.Breakfast} id="breakfast-checkbox"type="checkbox" className="peer"style={{display: 'none'}} ></input>
                         <label htmlFor="breakfast-checkbox" className="p-1 px-2 text-white rounded-lg border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500">
                             Breakfast
                         </label>
                     </div>
 
                     <div className="order-3">
-                        <input {...register("recipeMealType")} value={mealType.Lunch} id="lunch-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
+                        <input {...register("recipeMealType",{validate: validateMealType})} value={mealType.Lunch} id="lunch-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
                         <label htmlFor="lunch-checkbox" className="p-1 px-2 text-base text-white rounded-lg  border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500">
                             Lunch
                         </label>
                     </div>
 
                     <div className="order-4">
-                        <input {...register("recipeMealType")} value={mealType.Dinner} id="dinner-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
+                        <input {...register("recipeMealType",{validate: validateMealType})} value={mealType.Dinner} id="dinner-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
                         <label htmlFor="dinner-checkbox" className="p-1 px-2 text-base text-white rounded-lg  border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500">
                             Dinner
                         </label>
@@ -196,19 +214,20 @@ export default function Newrecipepage(){
                     <span className="order-5 w-full"></span>
 
                     <div className="order-6">
-                        <input {...register("recipeMealType")} value={mealType.Snack} id="snacks-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
+                        <input {...register("recipeMealType",{validate: validateMealType})} value={mealType.Snack} id="snacks-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
                         <label htmlFor="snacks-checkbox" className="p-1 px-2 text-base text-white rounded-lg  border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500">
                             Snacks
                         </label>
                     </div>
                     
                     <div className="order-7">
-                        <input {...register("recipeMealType")} value={mealType.BakedGood} id="baked-goods-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
+                        <input {...register("recipeMealType",{validate: validateMealType} )} value={mealType.BakedGood} id="baked-goods-checkbox"type="checkbox" className="peer"style={{display: 'none'}}></input>
                         <label htmlFor="baked-goods-checkbox" className="p-1 px-2 text-base text-white rounded-lg border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500">
                             Baked Goods
                         </label>
                     </div>
-
+                    <span className="order-8 w-full"></span>
+                    {errors.recipeMealType && <div id="recipe-name-error" className="text-red-500 order-9 ml-2">{errors.recipeMealType?.message?.toString()}</div>} 
                 </div>
 
                 <div id="recipe-difficulty" className="flex justify-left flex-wrap space-x-2 space-y-2">
@@ -299,7 +318,7 @@ interface stepProps{
 function RecipeStepInput({register,index,remove} : stepProps){
     return(
         <li  className="pl-[1rem]">
-            <input {...register(`recipeSteps.${index}.step`)} type="text" autoCorrect="off"  className="min-w-[40rem] rounded border-gray-400 text-base"/>
+            <input {...register(`recipeSteps.${index}.step`)} type="text"  autoCorrect="off" spellCheck="false" autoComplete="off"  className="min-w-[40rem] rounded border-gray-400 text-base"/>
             <button  className="ml-2 p-0.5 px-3 text-base text-white rounded-lg border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500" onClick={() =>{remove(index)}}>Remove</button>
         </li>
     );
@@ -308,7 +327,7 @@ function RecipeStepInput({register,index,remove} : stepProps){
 function UtensilInput({register,index,remove} : stepProps){
     return(
         <li className="pl-[1rem]">
-            <input {...register(`recipeUtensils.${index}.utensil`)} type="text" autoCorrect="off"  className="min-w-[40rem] rounded border-gray-400 text-base"/>
+            <input {...register(`recipeUtensils.${index}.utensil`)} type="text"  autoCorrect="off" spellCheck="false" autoComplete="off" className="min-w-[40rem] rounded border-gray-400 text-base"/>
         
             <button className="ml-2 p-0.5 px-3 text-base text-white rounded-lg border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500" onClick={() =>{remove(index)}}>Remove</button>
         </li>
@@ -318,9 +337,9 @@ function UtensilInput({register,index,remove} : stepProps){
 function IngredientInput({register,index,remove} : stepProps){
     return(
         <li className="pl-[1rem]">
-            <input {...register(`recipeIngredients.${index}.ingredient`)} type="text" autoCorrect="off" className="min-w-[19rem] mx-1 rounded border-gray-400 text-base"/>
-            <input {...register(`recipeIngredients.${index}.amount`)} type="text" autoCorrect="off" className="min-w-[9rem] mx-1 rounded border-gray-400 text-base"/>
-            <input {...register(`recipeIngredients.${index}.unit`)} type="text" autoCorrect="off" className="w-[7.5rem] mx-1 rounded border-gray-400 text-base"/>
+            <input {...register(`recipeIngredients.${index}.ingredient`)} type="text"  autoCorrect="off" spellCheck="false" autoComplete="off" className="min-w-[19rem] mx-1 rounded border-gray-400 text-base"/>
+            <input {...register(`recipeIngredients.${index}.amount`)} type="text"  autoCorrect="off" spellCheck="false" autoComplete="off" className="min-w-[9rem] mx-1 rounded border-gray-400 text-base"/>
+            <input {...register(`recipeIngredients.${index}.unit`)} type="text"  autoCorrect="off" spellCheck="false" autoComplete="off" className="w-[7.5rem] mx-1 rounded border-gray-400 text-base"/>
             <button className="ml-2 p-0.5 px-3 text-base text-white rounded-lg border-0 border-b-4 border-solid border-sky-600 bg-sky-400 peer-checked:bg-sky-600 hover:bg-sky-500" onClick={() =>{remove(index)}}>Remove</button>
 
         </li>
