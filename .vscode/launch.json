@@ -7,14 +7,18 @@
         {
             "type": "node",
             "name": "Run Server File",
+            "cwd": "${workspaceFolder}/server",
             "request": "launch",
             "runtimeArgs": [
                 "-r",
-                "./server/node_modules/ts-node/register"
+                "./node_modules/ts-node/register"
             ],
             "args": [
-                "${workspaceFolder}\\server\\server.ts"
+                "server.ts",
+                "--debug",
+                "1"
             ],
+            "console": "integratedTerminal"
         }
     ]
 }

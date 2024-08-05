@@ -17,7 +17,7 @@ export default function Newrecipepage(){
     type newRecipeInput = {
         recipeImage: any
         recipeName: String
-        recipeMealType: any
+        recipeMealType: mealType[]
         recipeDifficulty: string
         recipeUtensils : {
             utensil: string

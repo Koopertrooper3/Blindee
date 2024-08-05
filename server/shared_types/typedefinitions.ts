@@ -7,8 +7,11 @@ export enum mealType {
 }
 
 export interface Irecipe {
+    image: {
+        realName: string | undefined,
+        pathName: string | undefined
+    }
     title: string
-    image: string
     mealType: mealType[]
     difficulty: string
     utensils: string[]
