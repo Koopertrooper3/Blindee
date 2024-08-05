@@ -45,28 +45,6 @@ const recipeSchema = new Schema<Irecipe>({
         ingredient: String,
         amount: String,
         unit: String,
-        
-        validate : {
-            validator : (array : {ingredient: String, amount: String, unit: String}[]) => {
-
-                if(array.length < 0){
-                    throw new Error("Recipe must need at least one ingredient");
-                }
-                array.forEach((val) => {
-
-                    if(val.ingredient.length == 0){
-                        throw new Error("Ingredient field cannot be empty");
-                    }
-                    if(val.amount.length == 0){
-                        throw new Error("Amount field cannot be empty");
-                    }
-                    if(val.unit.length == 0){
-                        throw new Error("Unit field cannot be empty");
-                    }
-
-                }
-            )}
-        }
     }]
 
 })
